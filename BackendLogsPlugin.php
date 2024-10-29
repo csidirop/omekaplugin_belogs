@@ -1,4 +1,7 @@
 <?php
+
+defined('BELOGS_DIRECTORY') or define('BELOGS_DIRECTORY', dirname(__FILE__));
+
 /**
  * @package BackendLogs
  * @copyright Copyright 2024, Christos Sidiropoulos
