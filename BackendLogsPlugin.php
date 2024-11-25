@@ -1,7 +1,4 @@
 <?php
-
-defined('BELOGS_DIRECTORY') or define('BELOGS_DIRECTORY', dirname(__FILE__));
-
 /**
  * @package BackendLogs
  * @copyright Copyright 2024, Christos Sidiropoulos
@@ -9,70 +6,65 @@ defined('BELOGS_DIRECTORY') or define('BELOGS_DIRECTORY', dirname(__FILE__));
  */
 class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
 {
-    // Define hooks and filters used by the plugin
-    protected $_hooks = array(
-        // 'define_routes',    // Define custom routes for our plugin
-        'admin_head',       // Hook to include custom styles/scripts in admin
-        'config_form',      // Hook to include the config form
-        // 'admin_dashboard',  // Hook to display content on admin dashboard
-    );
+    protected $_hooks = [
+        'config',
+        'config_form',
+        'define_acl',
+    ];
+
+    protected $_filters = [
+        'admin_navigation_main',
+    ];
+
+    protected $_options = [
+        'template_option'=>'option_value'
+    ];
 
     /**
-     * @var array Filters for the plugin.
+     * Display the configuration form.
      */
-    // protected $_filters = array('admin_navigation_main');
-
-    /**
-     * @var array Options and their default values.
-     */
-    protected $_options = array();
-
-    /**
-     * Hook to define custom routes.
-    */
-    public function hookDefineRoutes($args): void
-    {
-        $router = $args['router'];
-        $router->addRoute(
-            'backend_logs',
-            new Zend_Controller_Router_Route(
-                'backend-logs',
-                array(
-                    'module' => 'default',
-                    'controller' => 'backend-logs',
-                    'action' => 'index',
-                )
-            )
-        );
-    }
-
-
     public function hookConfigForm(): void
     {
-        include 'config_form.php';
-        // require dirname(__FILE__) . '/config_form.php';
+        include 'views/admin/config-form.php';
     }
 
     /**
-     * Add navigation link.
+     * Process the configuration form submission.
      */
-    public function filterAdminNavigationMain($nav)
+    public function hookConfig($args): void
+    {
+        set_option('template_option_3', trim($args['post']['template-option-3']));
+    }
+
+    /**
+     * Define the plugin's Access Control List.
+     * 
+     * @param array $args
+     */
+    public function hookDefineAcl($args): void
+    {
+        $acl = $args['acl']; // get the Zend_Acl
+
+        $acl->addResource('BackendLogs_Index');
+
+        $acl->allow(array('super', 'admin'), array('BackendLogs_Index'));
+        $acl->deny(null, array('BackendLogs_Index'));
+    }
+
+    /**
+     * Add the BackendLogs link to the admin main navigation.
+     * 
+     * @param array Navigation array.
+     * @return array Filtered navigation array.
+     */
+    public function filterAdminNavigationMain($nav): array
     {
         $nav[] = array(
-            'label' => __('belog'),
-            'uri' => url('belog'),
-            'resource' => 'BackendLog_Index',
-            // 'uri' => url('index'),
+            'label' => __('Backend Logs'),
+            'uri' => url('backend-logs'),
+            'resource' => 'BackendLogs_Index',
             'privilege' => 'index'
         );
         return $nav;
-    }
-
-    /**
-     * Hook to add any necessary admin head scripts or styles.
-    */
-    public function hookAdminHead($args): void
-    {
-        // Add any custom CSS or JS here (optional)
     }
 }
