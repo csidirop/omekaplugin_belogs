@@ -1,25 +1,25 @@
 <?php
-$head = array(
-        'bodyclass' => 'Template index',
-        'title' => html_escape(__('Template'))
-    );
+    queue_css_file('belogs');
 
-    echo head($head);
+    $head = array(
+            'bodyclass' => 'BackendLogs index',
+            'title' => html_escape(__('Backend Logs'))
+        );
 
-    // <!--  For view-related function see: https://omeka.readthedocs.io/en/latest/Reference/packages/Function/View/index.html -->
+        echo head($head);
 ?>
 
 <div class="pagination"><?php echo pagination_links(); ?></div>
 
-<h2>Template Plugin Admin View</h2>
-<p>This is a sample admin view for the Template plugin.</p>
-<p>Here are some of the options set by this plugin loaded:</p>
+<h2>Overview</h2>
+<p>Here you can view various omeka related logs. </p>
 
-<ul>
-    <li>Config option 1: <strong><?php echo htmlspecialchars(get_option('template_option_1')); ?></strong></li>
-    <li>Config option 2: <strong><?php echo htmlspecialchars(get_option('template_option_2')); ?></strong></li>
-    <li>Config option 3: <strong><?php echo htmlspecialchars(get_option('template_option_3')); ?></strong></li>
-</ul>
+<pre><?php
+    foreach ($this->logContents as $i => $log) {
+        echo $i . "<br>";
+        echo $log . "<br>";
+    }
+?></pre>
 
 <div class="search-filters"><?php echo item_search_filters();?></div>
 

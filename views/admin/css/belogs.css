@@ -1,0 +1,8 @@
+pre {
+    max-height: 200px;
+    max-width: 100%;
+    overflow: auto;
+    border: 1px solid #ccc;
+    padding: 10px; 
+    background-color: #f9f9f9; /* Optional: Set a background color */
+}
