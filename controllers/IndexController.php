@@ -8,12 +8,6 @@
  */
 class BackendLogs_IndexController extends Omeka_Controller_AbstractActionController
 {
-    // Paths to the log file: //TODO get from config
-    private string $omekaLogFile = '/app/application/logs/errors.log';
-    private string $apacheErrorLogFile = '/var/log/apache2/error.log';
-    private string $apacheAccessLogFile = '/var/log/apache2/access.log';
-    private string $apacheOtherVHALogFile = '/var/log/apache2/other_vhosts_access.log';
-
     /**
      * Omeka needs the controller's indexAction function
      * 
@@ -21,10 +15,10 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
      */
     public function indexAction(): void
     {
-        $this->printLog($this->omekaLogFile, "omeka error.log");
-        $this->printLog($this->apacheErrorLogFile, "apache2 error.log");
-        $this->printLog($this->apacheAccessLogFile, "apache2 access.log");
-        $this->printLog($this->apacheOtherVHALogFile, "apache2 other_vhosts_access.log");
+        // var_dump(get_option('logPaths'));
+        foreach ((array)json_decode(get_option('logPaths')) as $option => $path) {
+            $this->printLog(get_option($option), $option);
+        }
     }
 
     /**
@@ -48,7 +42,7 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
                 $this->view->logs = [];
             }
             if ($logContents === false) {
-                $this->view->logs[$logName] =  "Error reading the log file.";
+                $this->view->logs[$logName] = "Error reading the log file.";
             } else {
                 $this->view->logs[$logName] = htmlspecialchars($logContents);
             }

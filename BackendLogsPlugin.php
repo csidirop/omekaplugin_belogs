@@ -7,6 +7,8 @@
 class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
 {
     protected $_hooks = [
+        'install',
+        'uninstall',
         'config',
         'config_form',
         'define_acl',
@@ -17,8 +19,36 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     ];
 
     protected $_options = [
-        'template_option'=>'option_value'
+        'logPaths' => [
+            'omekaLogFile' => '/app/application/logs/errors.log',
+            'apacheErrorLogFile' => '/var/log/apache2/error.log',
+            'apacheAccessLogFile' => '/var/log/apache2/access.log',
+            'apacheOtherVHALogFile' => '/var/log/apache2/other_vhosts_access.log',
+        ]
     ];
+
+    /**
+     *  Hooks in the proccess of installing the plugin.
+     */
+    public function hookInstall(): void
+    {
+        // Add default values to plugin options:
+        foreach ($this->_options as $option => $value) {
+            set_option($option, json_encode($value));
+            //TODO: do not set individual options
+        }
+    }
+
+    /**
+     *  Hooks in the proccess of uninstalling the plugin.
+     */
+    public function hookUninstall(): void
+    {
+        // Remove default plugin options:
+        foreach ($this->_options as $option => $value) {
+            delete_option($option);
+        }
+    }
 
     /**
      * Display the configuration form.
@@ -33,7 +63,16 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookConfig($args): void
     {
-        set_option('template_option_3', trim($args['post']['template-option-3']));
+        debug("hookconfig");
+        foreach ($this->_options['logPaths'] as $option => $path) {
+            set_option($option, trim($args['post'][$option]));
+            debug($option .": " . trim($args['post'][$option]));
+            debug($option .": " . get_option($option));
+        }
+
+        // set_option('template_option_3', trim($args['post']['template-option-3']));
+        // set_option('template_option_3', trim($args['post']['template-option-3']));
+        // set_option('template_option_3', trim($args['post']['template-option-3']));
     }
 
     /**

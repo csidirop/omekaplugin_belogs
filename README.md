@@ -22,7 +22,7 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 ## TODOs and thoughts 
 
-- Config the paths
+- ~~Config the paths~~
 - Config the ACL
 - Overview strip lines
 - Tabs with var logs
