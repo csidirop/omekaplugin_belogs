@@ -14,12 +14,12 @@
 <h2>Overview</h2>
 <p>Here you can view various omeka related logs. </p>
 
-<pre><?php
-    foreach ($this->logContents as $i => $log) {
-        echo $i . "<br>";
-        echo $log . "<br>";
+<?php
+    foreach ($this->logs as $logName => $log) {
+        echo '<div class="title">Logtype: ' . $logName . ': </div><br>';
+        echo "<pre>" . $log . "</pre><br>";
     }
-?></pre>
+?>
 
 <div class="search-filters"><?php echo item_search_filters();?></div>
 
