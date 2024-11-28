@@ -55,7 +55,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookConfigForm(): void
     {
-        include 'views/admin/config-form.php';
+        include 'views/admin/config/config-form.php';
     }
 
     /**
