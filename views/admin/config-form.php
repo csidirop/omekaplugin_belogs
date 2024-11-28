@@ -9,7 +9,7 @@
             <p class="explanation">
                 <?php echo __('Path to the file:'); ?>
             </p>
-            <?php echo get_view()->formInput($option, get_option($option)); ?>
+            <?php echo get_view()->formText($option, get_option($option)); ?>
         </div>
     </div>
 <?php endforeach; ?>
