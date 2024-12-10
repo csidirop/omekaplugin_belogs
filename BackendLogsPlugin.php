@@ -34,6 +34,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         // Add default values to plugin options as 'logPaths' array:
         set_option('logPaths', json_encode($this->_options['logPaths']));
+        set_option('belogs_rolesACL', json_encode($this->generateRolesArray()));
     }
 
     /**
@@ -43,6 +44,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         // Remove default plugin options:
         delete_option('logPaths');
+        delete_option('belogs_rolesACL');
     }
 
     /**
@@ -58,11 +60,19 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookConfig($args): void
     {
+        // Set log paths:
         $logPaths = json_decode(get_option('logPaths'), true);
         foreach ($logPaths as $option => $path) {
             $logPaths[$option] = trim($args['post'][$option]);
         }
         set_option('logPaths', json_encode($logPaths));
+
+        // Set ACL:
+        $rolesArr = $this->generateRolesArray();
+        foreach ($args['post']['belogs-rolesACL'] as $option) {
+            $rolesArr[$option] = true;
+        }
+        set_option("belogs_rolesACL", json_encode($rolesArr));
     }
 
     /**
@@ -73,10 +83,12 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookDefineAcl($args): void
     {
         $acl = $args['acl']; // get the Zend_Acl
-
         $acl->addResource('BackendLogs_Index');
 
-        $acl->allow(array('super', 'admin'), array('BackendLogs_Index'));
+        // Allow only specific users the view to the logs:
+        $trueKeys = array_keys(array_filter(json_decode(get_option("belogs_rolesACL"),true )));
+
+        $acl->allow($trueKeys, array('BackendLogs_Index'));
         $acl->deny(null, array('BackendLogs_Index'));
     }
 
@@ -95,5 +107,18 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
             'privilege' => 'index'
         );
         return $nav;
+    }
+
+    /**
+     * Generates an array of roles for the plugin's Access Control List.
+     *
+     * @return array
+     */
+    private function generateRolesArray(): array
+    {
+        // Create an array with the role names as keys and a value indicating whether they are enabled or not. (default = false)
+        $rolesArr = array_fill_keys(array_keys(get_user_roles()), false);
+        $rolesArr['super'] = true; // super user is allways true
+        return $rolesArr;
     }
 }
