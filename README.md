@@ -24,6 +24,7 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 - ~~Config the paths~~
 - Config the ACL
+- Reverse: new to old messages
 - Overview strip lines
 - Tabs with var logs
 - Option to check if logs/reading is working (eg debug())

@@ -15,9 +15,8 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
      */
     public function indexAction(): void
     {
-        // var_dump(get_option('logPaths'));
         foreach ((array)json_decode(get_option('logPaths')) as $option => $path) {
-            $this->printLog(get_option($option), $option);
+            $this->printLog($path, $option);
         }
     }
 
@@ -51,5 +50,4 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         }
     }
 }
-
 ?>

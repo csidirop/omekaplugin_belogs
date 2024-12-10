@@ -32,11 +32,8 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookInstall(): void
     {
-        // Add default values to plugin options:
-        foreach ($this->_options as $option => $value) {
-            set_option($option, json_encode($value));
-            //TODO: do not set individual options
-        }
+        // Add default values to plugin options as 'logPaths' array:
+        set_option('logPaths', json_encode($this->_options['logPaths']));
     }
 
     /**
@@ -45,9 +42,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookUninstall(): void
     {
         // Remove default plugin options:
-        foreach ($this->_options as $option => $value) {
-            delete_option($option);
-        }
+        delete_option('logPaths');
     }
 
     /**
@@ -63,16 +58,11 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookConfig($args): void
     {
-        debug("hookconfig");
-        foreach ($this->_options['logPaths'] as $option => $path) {
-            set_option($option, trim($args['post'][$option]));
-            debug($option .": " . trim($args['post'][$option]));
-            debug($option .": " . get_option($option));
+        $logPaths = json_decode(get_option('logPaths'), true);
+        foreach ($logPaths as $option => $path) {
+            $logPaths[$option] = trim($args['post'][$option]);
         }
-
-        // set_option('template_option_3', trim($args['post']['template-option-3']));
-        // set_option('template_option_3', trim($args['post']['template-option-3']));
-        // set_option('template_option_3', trim($args['post']['template-option-3']));
+        set_option('logPaths', json_encode($logPaths));
     }
 
     /**
