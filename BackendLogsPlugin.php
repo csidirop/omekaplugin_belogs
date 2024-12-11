@@ -19,7 +19,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     ];
 
     protected $_options = [
-        'logPaths' => [
+        'belogs_logPaths' => [
             'omekaLogFile' => '/app/application/logs/errors.log',
             'apacheErrorLogFile' => '/var/log/apache2/error.log',
             'apacheAccessLogFile' => '/var/log/apache2/access.log',
@@ -32,8 +32,8 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookInstall(): void
     {
-        // Add default values to plugin options as 'logPaths' array:
-        set_option('logPaths', json_encode($this->_options['logPaths']));
+        // Add default values to plugin options as 'belogs_logPaths' array:
+        set_option('belogs_logPaths', json_encode($this->_options['belogs_logPaths']));
         set_option('belogs_rolesACL', json_encode($this->generateRolesArray()));
     }
 
@@ -43,7 +43,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookUninstall(): void
     {
         // Remove default plugin options:
-        delete_option('logPaths');
+        delete_option('belogs_logPaths');
         delete_option('belogs_rolesACL');
     }
 
@@ -61,11 +61,11 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookConfig($args): void
     {
         // Set log paths:
-        $logPaths = json_decode(get_option('logPaths'), true);
+        $logPaths = json_decode(get_option('belogs_logPaths'), true);
         foreach ($logPaths as $option => $path) {
             $logPaths[$option] = trim($args['post'][$option]);
         }
-        set_option('logPaths', json_encode($logPaths));
+        set_option('belogs_logPaths', json_encode($logPaths));
 
         // Set ACL:
         $rolesArr = $this->generateRolesArray();
@@ -118,7 +118,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
     {
         // Create an array with the role names as keys and a value indicating whether they are enabled or not. (default = false)
         $rolesArr = array_fill_keys(array_keys(get_user_roles()), false);
-        $rolesArr['super'] = true; // super user is allways true
+        $rolesArr['super'] = true; // super user is
         return $rolesArr;
     }
 }

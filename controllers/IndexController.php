@@ -15,7 +15,7 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
      */
     public function indexAction(): void
     {
-        foreach ((array)json_decode(get_option('logPaths')) as $option => $path) {
+        foreach ((array)json_decode(get_option('belogs_logPaths')) as $option => $path) {
             $this->printLog($path, $option);
         }
     }
