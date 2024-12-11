@@ -1,4 +1,4 @@
-<h2><?= __('Configure log paths') ?></h2>
+<h2><?= __('Configure Log Paths') ?></h2>
 
 <?php foreach ((array)json_decode(get_option('belogs_logPaths')) as $option => $path): ?>
     <div class="field">
@@ -14,7 +14,7 @@
     </div>
 <?php endforeach; ?>
 
-<h2><?= __('Config Access rights') ?></h2>
+<h2><?= __('Configure Access Rights') ?></h2>
 <div class="field">
     <div class="two columns alpha">
         <?php echo get_view()->formLabel('belogs-rolesACL', "Backend Logs Access"); ?>
