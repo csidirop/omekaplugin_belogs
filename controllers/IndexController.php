@@ -16,7 +16,7 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
     public function indexAction(): void
     {
         foreach ((array)json_decode(get_option('belogs_logPaths')) as $option => $path) {
-            $this->printLog($path, $option);
+            $this->getLog($path, $option);
         }
     }
 
@@ -33,7 +33,7 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
      * 
      * @return void
      */
-    private function printLog($filename, $logName): void
+    private function getLog($filename, $logName): void
     {
         if (file_exists($filename)) {
             $logContents = file_get_contents($filename);
@@ -48,6 +48,15 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         } else {
             $this->view->logs[$logName] = "Log file not found: " . htmlspecialchars($filename);
         }
+    }
+
+    
+    /**
+     * Browse the imports.
+     */
+    public function viewAction()
+    {
+        // parent::browseAction();
     }
 }
 ?>
