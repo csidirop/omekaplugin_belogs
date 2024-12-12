@@ -20,13 +20,13 @@
 
 Contributions are welcome! Please feel free to submit a pull request or open an issue if you encounter a bug or have a feature request.
 
-## TODOs and thoughts 
+## TODOs and thoughts
 
-- ~~Config the paths~~
-- ~~Config the ACL~~
+- ~~Config the paths~~ (-> done in 78956d6)
+- ~~Config the ACL~~ (-> done in b07d649)
 - Reverse: new to old messages
-- Overview strip lines
-- Tabs with var logs
+- ~~Overview strip lines~~
+- ~~Tabs with var logs~~
 - Option to check if logs/reading is working (eg debug())
 - Check if logging works
 - Option to clear and/or trim logs

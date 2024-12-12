@@ -50,13 +50,14 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         }
     }
 
-    
     /**
      * Browse the imports.
      */
     public function viewAction()
     {
-        // parent::browseAction();
+        $logName = $this->getRequest()->getParam('log');
+        $filename = ((array)json_decode(get_option('belogs_logPaths')))[$logName] ;
+        $this->getLog($filename, $logName);
     }
 }
 ?>

@@ -6,18 +6,15 @@
 ?>
 
 <div class="pagination"><?php echo pagination_links(); ?></div>
-<?php echo $this->partial('common/nav.php', [
-    'variable1' => "val1",
-    'variable2' => "val2",
-]);?>
+<?php echo $this->partial('common/nav.php');?>
 
 <h2>Overview</h2>
 <p>Here you can view various omeka related logs.</p>
 
 <?php
     foreach ($this->logs as $logName => $log) {
-        echo '<div class="title">Logtype: ' . $logName . ': </div><br>';
-        echo "<pre>" . $log . "</pre><br>";
+        echo '<div class="title"><h3>Logtype: ' . $logName . ': </h3></div>';
+        echo "<pre class='short'>" . $log . "</pre><br>";
     }
 ?>
 
