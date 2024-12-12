@@ -2,14 +2,21 @@ pre {
     max-width: 100%;
     overflow: auto;
     border: 1px solid #ccc;
-    padding: 10px; 
-    background-color: #f9f9f9; /* Optional: Set a background color */
+    padding: 10px;
+    background-color: #f9f9f9;
+    margin-bottom: 0;
 }
 
-pre.short{
+pre.short {
     max-height: 150px;
 }
 
-pre.full{
+pre.full {
     max-height: calc(100vh - 200px);
+}
+
+div.set {
+    border: 1px solid #d8d8d8;
+    padding: 0px 15px 0px 15px;
+    margin: 10px 0px 10px 0px;
 }

@@ -13,8 +13,10 @@
 
 <?php
     foreach ($this->logs as $logName => $log) {
+        echo "<div class=set>";
         echo '<div class="title"><h3>Logtype: ' . $logName . ': </h3></div>';
         echo "<pre class='short'>" . $log . "</pre><br>";
+        echo "</div>";
     }
 ?>
 
