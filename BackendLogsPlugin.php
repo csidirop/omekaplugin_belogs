@@ -12,6 +12,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
         'config',
         'config_form',
         'define_acl',
+        'define_routes'
     ];
 
     protected $_filters = [
@@ -90,6 +91,12 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
 
         $acl->allow($trueKeys, array('BackendLogs_Index'));
         $acl->deny(null, array('BackendLogs_Index'));
+    }
+
+    public function hookDefineRoutes($args)
+    {
+        $router = $args['router'];
+        $router->addConfig(new Zend_Config_Ini(__DIR__ . '/routes.ini', 'routes'));
     }
 
     /**

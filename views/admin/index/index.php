@@ -5,11 +5,15 @@
     echo head($head);
 ?>
 
-<div class="pagination"><?php echo pagination_links(); ?></div>
 <?php echo $this->partial('common/nav.php');?>
 
 <h2>Overview</h2>
 <p>Here you can view various omeka related logs.</p>
+
+<?php echo url('test'); ?>
+<form method="post" action="<?php echo url('test'); ?>">
+    <button type="submit">Clear Text File</button>
+</form>
 
 <?php
     foreach ($this->logs as $logName => $log) {

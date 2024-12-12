@@ -59,5 +59,9 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         $filename = ((array)json_decode(get_option('belogs_logPaths')))[$logName] ;
         $this->getLog($filename, $logName);
     }
+
+    public function testAction(){
+        debug("TEST");
+    }
 }
 ?>
