@@ -12,6 +12,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
         'config',
         'config_form',
         'define_acl',
+        'upgrade'
     ];
 
     protected $_filters = [
@@ -45,6 +46,21 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
         // Remove default plugin options:
         delete_option('belogs_logPaths');
         delete_option('belogs_rolesACL');
+        delete_option('belog_setting1');
+        delete_option('belog_setting2');
+        delete_option('belog_setting3');
+    }
+
+    /**
+     * Upgrade routine
+     * 
+     * @param array $args
+     */
+    public function hookUpgrade($args): void {
+        $oldVersion = $args['old_version'];
+        $newVersion = $args['new_version'];
+        
+        set_option('belogs_rolesACL', json_encode($this->generateRolesArray()));
     }
 
     /**
