@@ -28,7 +28,7 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 - ~~Overview strip lines~~
 - ~~Tabs with var logs~~
 - Option to check if logs/reading is working (eg debug())
-- Check if logging works
+- ~~Check if logging is active~~
 - Option to clear and/or trim logs
 - Coloring?
 

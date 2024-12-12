@@ -52,6 +52,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookConfigForm(): void
     {
+        $this->checkLogSettings();
         include 'views/admin/config-form.php';
     }
 
@@ -120,5 +121,39 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
         $rolesArr = array_fill_keys(array_keys(get_user_roles()), false);
         $rolesArr['super'] = true; // super user is
         return $rolesArr;
+    }
+
+    /**
+     * Runs `checkLogSetting()` for every given setting that need to be checked and saves it as option.
+     * 
+     * @return void
+     */
+    private function checkLogSettings(): void {
+        set_option('belog_setting1', $this->checkLogSetting('/app/.htaccess', 'SetEnv APPLICATION_ENV development', '#SetEnv APPLICATION_ENV development'));
+        set_option('belog_setting2', $this->checkLogSetting('/app/application/config/config.ini', 'debug.exceptions = true', ';debug.exceptions = true'));
+        set_option('belog_setting3', $this->checkLogSetting('/app/application/config/config.ini', 'log.priority = Zend_Log::DEBUG'));
+    }
+
+    /**
+     * Reads and checks the given configs for given settings and returns true if they are set or false otherwise.
+     * 
+     * @param mixed $filePath
+     * @param mixed $needle
+     * @param mixed $antiNeedle
+     * @return bool
+     */
+    private function checkLogSetting($filePath, $needle, $antiNeedle = ''): bool {
+        // Return false if the file does not exist or cannot be read
+        if (!is_readable($filePath)) {
+            return false;
+        }
+
+        // Check if the specific line exists in the file
+        $fileContents = file_get_contents($filePath);
+        if (!empty($antiNeedle) && (strpos($fileContents, $antiNeedle) !== false)) {
+            return false;
+        }
+
+        return strpos($fileContents, $needle) !== false;
     }
 }
