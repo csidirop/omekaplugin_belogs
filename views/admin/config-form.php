@@ -9,15 +9,15 @@
         <tbody>
             <tr>
                 <td>
-                    <div style="display: flex; align-items: center;"><label>Option 1: </label><span class="indicator <?php echo get_option('belog_setting1') ? 'green' : 'red'; ?>"></span></div>
+                    <div style="display: flex; align-items: center;"><label>Setting 1: </label><span class="indicator <?php echo ((array)json_decode(get_option('belogs_settingCheck'), true))['belogs_setting1'] ? 'green' : 'red'; ?>"></span></div>
                     <code>SetEnv APPLICATION_ENV development</code>
                 </td>
                 <td>
-                    <div style="display: flex; align-items: center;"><label>Option 2: </label><span class="indicator <?php echo get_option('belog_setting2') ? 'green' : 'red'; ?>"></span></div>
+                    <div style="display: flex; align-items: center;"><label>Setting 2: </label><span class="indicator <?php echo ((array)json_decode(get_option('belogs_settingCheck'), true))['belogs_setting2'] ? 'green' : 'red'; ?>"></span></div>
                     <code>debug.exceptions = true</code>
                 </td>
                 <td>
-                    <div style="display: flex; align-items: center;"><label>Option 3: </label><span class="indicator <?php echo get_option('belog_setting1') ? 'green' : 'red'; ?>"></span></div>
+                    <div style="display: flex; align-items: center;"><label>Setting 3: </label><span class="indicator <?php echo ((array)json_decode(get_option('belogs_settingCheck'), true))['belogs_setting3'] ? 'green' : 'red'; ?>"></span></div>
                     <code>log.priority = Zend_Log::DEBUG</code>
                 </td>
             </tr>

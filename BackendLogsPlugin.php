@@ -46,9 +46,7 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
         // Remove default plugin options:
         delete_option('belogs_logPaths');
         delete_option('belogs_rolesACL');
-        delete_option('belog_setting1');
-        delete_option('belog_setting2');
-        delete_option('belog_setting3');
+        delete_option('belogs_settingCheck');
     }
 
     /**
@@ -145,9 +143,12 @@ class BackendLogsPlugin extends Omeka_Plugin_AbstractPlugin
      * @return void
      */
     private function checkLogSettings(): void {
-        set_option('belog_setting1', $this->checkLogSetting('/app/.htaccess', 'SetEnv APPLICATION_ENV development', '#SetEnv APPLICATION_ENV development'));
-        set_option('belog_setting2', $this->checkLogSetting('/app/application/config/config.ini', 'debug.exceptions = true', ';debug.exceptions = true'));
-        set_option('belog_setting3', $this->checkLogSetting('/app/application/config/config.ini', 'log.priority = Zend_Log::DEBUG'));
+        $belog_settingCheck = [
+            'belogs_setting1' => $this->checkLogSetting('/app/.htaccess', 'SetEnv APPLICATION_ENV development', '#SetEnv APPLICATION_ENV development'),
+            'belogs_setting2'=> $this->checkLogSetting('/app/application/config/config.ini', 'debug.exceptions = true', ';debug.exceptions = true'),
+            'belogs_setting3'=> $this->checkLogSetting('/app/application/config/config.ini', 'log.priority = Zend_Log::DEBUG')
+        ];
+        set_option('belogs_settingCheck', json_encode($belog_settingCheck));
     }
 
     /**
