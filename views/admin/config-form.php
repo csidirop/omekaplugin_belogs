@@ -48,6 +48,7 @@
     <div class="field">
         <div class="two columns alpha">
             <?php echo $view->formLabel($option, $option); ?>
+            <div><p class="explanation" style= <?php echo file_exists($path) ? '> File exists' : '"color: darkred;">File not found' ?> </p></div>
         </div>
         <div class="inputs five columns omega">
             <p class="explanation">
