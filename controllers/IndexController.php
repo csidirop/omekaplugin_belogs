@@ -59,5 +59,99 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         $filename = ((array)json_decode(get_option('belogs_logPaths')))[$logName] ;
         $this->getLog($filename, $logName);
     }
+
+    /**
+     * Clears all logs
+     * 
+     * @return void
+     */
+    public function clearLogsAction(): void {
+        $paths = (array)json_decode(get_option('belogs_logPaths'),true);
+        foreach ($paths as $name => $path) {
+            $this->trimLogs($path, $name, 0,0);
+        }
+
+        $this->_helper->redirector('index', 'index');
+    }
+
+    /**
+     * Trims all logs
+     * 
+     * @return void
+     */
+    public function trimLogsAction(): void {
+        // $len = $this->getRequest()->getParam('len'); //TODO
+        $paths = (array)json_decode(get_option('belogs_logPaths'),true);
+        foreach ($paths as $name => $path) {
+            $this->trimLogs($path, $name, 25);
+        }
+
+        $this->_helper->redirector('index', 'index');
+    }
+
+    /**
+     * Middleworker to call the trimLogToLength() function from the clear and trim actions.
+     * 
+     * @param mixed $path
+     * @param mixed $name
+     * @param mixed $maxLines
+     * @param mixed $lenght
+     * @return void
+     */
+    private function trimLogs($path, $name, $maxLines, $lenght = null): void {
+        if (($path) != '') {
+            try {
+                $this->trimLogToLength($path, $maxLines, $lenght);
+                $this->_helper->flashMessenger(__('Trimmed: '. $name . ' ('. $path .')', 'success'));
+            } catch (Exception $e) {
+                debug($msg = 'Not trimmed: ' . $name . ' ('. $path . ') | ' .$e->getMessage());
+                $this->_helper->flashMessenger($msg, 'failure');
+            }
+        }
+    }
+
+    /**
+     * Trims given file content to the specified lenght
+     * 
+     * @param string $filePath
+     * @param int $maxLines
+     * @param int $lenght use lenght = 0 to delete all lines
+     * @throws \Exception
+     * @return void
+     */
+    private function trimLogToLength($filePath, $maxLines, $lenght = null): void {
+        // Check if the file exists:
+        if (!file_exists($filePath)) {
+            throw new Exception("Log file does not exist: $filePath");
+        }
+
+        // Read the file into an array of lines:
+        $lines = file($filePath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        if ($lines === false) {
+            throw new Exception("Failed to read the log file.");
+        }
+
+        // Get only the last $maxLines lines:
+        $trimmedLines = array_slice($lines, -$maxLines, $lenght);
+
+        // Write the trimmed lines back to the file:
+        $fileHandle = fopen($filePath, 'w');
+        if (!$fileHandle) {
+            throw new Exception("Failed to open the log file for writing.");
+        }
+
+        // Lock the file to avoid conflicts:
+        if (!flock($fileHandle, LOCK_EX)) {
+            fclose($fileHandle);
+            throw new Exception("Unable to lock the file.");
+        }
+
+        // Write the trimmed lines to the file:
+        fwrite($fileHandle, implode(PHP_EOL, $trimmedLines) . PHP_EOL);
+
+        // Unlock and close the file:
+        flock($fileHandle, LOCK_UN);
+        fclose($fileHandle);
+    }
 }
 ?>
