@@ -68,10 +68,24 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
     public function clearLogsAction(): void {
         $paths = (array)json_decode(get_option('belogs_logPaths'),true);
         foreach ($paths as $name => $path) {
-            $this->trimLogs($path, $name, 0,0);
+            $this->trimLog($path, $name, 0,0);
         }
 
         $this->_helper->redirector('index', 'index');
+    }
+
+    /**
+     * Clears a single given log
+     * 
+     * @return void
+     */
+    public function clearLogAction(): void {
+        $logName = $this->getRequest()->getParam('log');
+        
+        $paths = (array)json_decode(get_option('belogs_logPaths'),true);
+        $this->trimLog($paths[$logName], $logName, 0,0);
+
+        $this->_helper->redirector('view','index',null,['log' => $logName]);
     }
 
     /**
@@ -83,10 +97,24 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         // $len = $this->getRequest()->getParam('len'); //TODO
         $paths = (array)json_decode(get_option('belogs_logPaths'),true);
         foreach ($paths as $name => $path) {
-            $this->trimLogs($path, $name, 25);
+            $this->trimLog($path, $name, 25);
         }
 
         $this->_helper->redirector('index', 'index');
+    }
+
+    /**
+     * Trims a single given log
+     * 
+     * @return void
+     */
+    public function trimLogAction(): void {
+        $logName = $this->getRequest()->getParam('log');
+        
+        $paths = (array)json_decode(get_option('belogs_logPaths'),true);
+        $this->trimLog($paths[$logName], $logName, 25);
+
+        $this->_helper->redirector('view','index',null,['log' => $logName]);
     }
 
     /**
@@ -98,13 +126,13 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
      * @param mixed $lenght
      * @return void
      */
-    private function trimLogs($path, $name, $maxLines, $lenght = null): void {
+    private function trimLog($path, $name, $maxLines, $lenght = null): void {
         if (($path) != '') {
             try {
                 $this->trimLogToLength($path, $maxLines, $lenght);
-                $this->_helper->flashMessenger('Trimmed: '. $name . ' ('. $path .')', 'success');
+                $this->_helper->flashMessenger((isset($lenght) ? 'Cleared: ' : 'Trimmed: ') . $name . ' ('. $path .')', 'success');
             } catch (Exception $e) {
-                debug($msg = 'Not trimmed: ' . $name . ' ('. $path . ') | ' .$e->getMessage());
+                debug($msg = (isset($lenght) ? 'Not cleared: ' : 'Not trimmed: ') . $name . ' ('. $path . ') => ' .$e->getMessage());
                 $this->_helper->flashMessenger($msg, 'error');
             }
         }
@@ -152,6 +180,25 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         // Unlock and close the file:
         flock($fileHandle, LOCK_UN);
         fclose($fileHandle);
+    }
+
+    /**
+     * Tests a single given log by adding an entry
+     * 
+     * @return void
+     */
+    public function testLogAction(): void {
+        $logName = $this->getRequest()->getParam('log');
+        
+        if($logName === "omekaLogFile") {
+            debug("TEST: " . $logName);
+        } 
+
+        if($logName == 'apacheErrorLogFile') {
+            error_log("TEST: " . $logName);
+        }
+
+        $this->_helper->redirector('view', 'index', null, ['log' => $logName]);
     }
 }
 ?>

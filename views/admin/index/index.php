@@ -13,8 +13,8 @@
 <p>Here you can view various omeka related logs.</p>
 
 <div>
-    <a class="button green" href="<?php echo url('backend-logs/index/clear-logs'); ?>">Clear All Logs</a>
-    <a class="button green" href="<?php echo url('backend-logs/index/trim-logs'); ?>"><?php echo __('Trim Logs (to 25)'); ?></a>
+    <a class="button red" href="<?php echo url('backend-logs/index/clear-logs'); ?>">Clear All Logs</a>
+    <a class="button red" href="<?php echo url('backend-logs/index/trim-logs'); ?>"><?php echo __('Trim Logs (to 25)'); ?></a>
 </div>
 
 <div>
