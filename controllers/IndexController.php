@@ -191,11 +191,17 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         $logName = $this->getRequest()->getParam('log');
         
         if($logName === "omekaLogFile") {
-            debug("TEST: " . $logName);
-        } 
+            // debug("TEST debug message: $logName");
+            _log("TEST 1/6: debug message", Zend_Log::DEBUG);
+            _log("TEST 2/6: info message", Zend_Log::INFO);
+            _log("TEST 3/6: warning message", Zend_Log::WARN);
+            _log("TEST 4/6: error message", Zend_Log::ERR);
+            _log("TEST 5/6: critical message", Zend_Log::CRIT);
+            _log("TEST 6/6: alert message", Zend_Log::ALERT);
+        }
 
         if($logName == 'apacheErrorLogFile') {
-            error_log("TEST: " . $logName);
+            error_log("TEST apache error message");
         }
 
         $this->_helper->redirector('view', 'index', null, ['log' => $logName]);
