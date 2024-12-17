@@ -102,10 +102,10 @@ class BackendLogs_IndexController extends Omeka_Controller_AbstractActionControl
         if (($path) != '') {
             try {
                 $this->trimLogToLength($path, $maxLines, $lenght);
-                $this->_helper->flashMessenger(__('Trimmed: '. $name . ' ('. $path .')', 'success'));
+                $this->_helper->flashMessenger('Trimmed: '. $name . ' ('. $path .')', 'success');
             } catch (Exception $e) {
                 debug($msg = 'Not trimmed: ' . $name . ' ('. $path . ') | ' .$e->getMessage());
-                $this->_helper->flashMessenger($msg, 'failure');
+                $this->_helper->flashMessenger($msg, 'error');
             }
         }
     }
