@@ -11,10 +11,16 @@
 1. Clone or download this repository to your local system.
 2. Upload the plugin folder to the `/plugins` directory of your Omeka Classic installation.
 3. Install the plugin via the Omeka plugin panel.
-4. _TODO: config_
+
+## Configuration
+1. After installation or at any time a superuser wants to configure it there is a handy configuration page
+2. The page has three parts:
+    1. Check Logging Configuration: Checks the configurations for the set logging configuration. The most common logging configurations are given as examples.
+    2. Configure Log Paths: Allows you to set custom log paths.
+    3. Configure Access Rights: restrict the access to the BE logs to specific roles (super is always set).
 
 ## Usage
-1. After installation, navigate to the **Backend Logs** section in the Omeka admin panel.
+1. After configuration, navigate to the **Backend Logs** section in the Omeka backend panel.
 
 ## Contributing
 
@@ -22,15 +28,15 @@ Contributions are welcome! Please feel free to submit a pull request or open an 
 
 ## TODOs and thoughts
 
-- ~~Config the paths~~ (-> done in 78956d6)
-- ~~Config the ACL~~ (-> done in b07d649)
-- Reverse: new to old messages
-- ~~Overview strip lines~~
-- ~~Tabs with var logs~~
-- Option to check if logs/reading is working (eg debug())
-- ~~Check if logging is active~~
-- Option to clear and/or trim logs
-- Coloring?
+- [x] Config the paths (-> done in #78956d6 )
+- [x] Config the ACL (-> done in #b07d649 )
+- [ ] Reverse: new to old messages
+- [x] Overview strip lines
+- [x] Tabs with var logs
+- [x] Option to check if logs/reading is working (eg debug()) (-> done in #9ed3aa6)
+- [x] Check if logging is active
+- [x] Option to clear and/or trim logs (-> done in #5e85850 and #9ed3aa6 )
+- [ ] Coloring?
 
 
 ## License
